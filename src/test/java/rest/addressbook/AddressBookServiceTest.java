@@ -240,7 +240,15 @@ public class AddressBookServiceTest {
         AddressBook addressBookRetrieved2 = response
                 .readEntity(AddressBook.class);
         assertNotEquals(addressBookRetrieved2.getPersonList().size(), addressBookRetrieved.getPersonList().size());
-	}
+        assertEquals(addressBookRetrieved.getPersonList()
+                .get(1).getName(),addressBookRetrieved2.getPersonList()
+                .get(1).getName());
+        assertEquals(addressBookRetrieved.getPersonList()
+                .get(0).getName(),addressBookRetrieved2.getPersonList()
+                .get(0).getName());
+
+
+    }
 
 	@Test
 	public void updateUsers() throws IOException {
@@ -298,10 +306,10 @@ public class AddressBookServiceTest {
                 .put(Entity.entity(maria, MediaType.APPLICATION_JSON));
         assertEquals(200, response.getStatus());
         assertEquals(MediaType.APPLICATION_JSON_TYPE, response.getMediaType());
-        juanUpdated = response.readEntity(Person.class);
-        assertEquals(maria.getName(), juanUpdated.getName());
-        assertEquals(2, juanUpdated.getId());
-        assertEquals(juanURI, juanUpdated.getHref());
+        Person juanUpdated2 = response.readEntity(Person.class);
+        assertEquals(juanUpdated2.getName(), juanUpdated.getName());
+        assertEquals(juanUpdated2.getId(), juanUpdated.getId());
+        assertEquals(juanUpdated2.getHref(), juanUpdated.getHref());
 	
 	}
 
