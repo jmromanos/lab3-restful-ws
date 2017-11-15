@@ -1,0 +1,208 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This is the API that it is used in the lab3",
+    "version" : "1.0.0",
+    "title" : "Lab3 API",
+    "contact" : {
+      "email" : "fjlopez@unizar.es"
+    }
+  },
+  "paths" : {
+    "/contacts" : {
+      "get" : {
+        "summary" : "Gets the full address book",
+        "description" : "Returns all contacts available in the system\n",
+        "operationId" : "getContacts",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Full contact list",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/AddressBook"
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Adds a new entry to the address book",
+        "description" : "Adds a contact to the address book",
+        "operationId" : "addContact",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "person",
+          "description" : "Person to add to the address book",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Person"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "person added"
+          }
+        }
+      }
+    },
+    "/contacts/person/{id}" : {
+      "get" : {
+        "summary" : "Get a person from the address book",
+        "description" : "Returns the Person with the corresponding id",
+        "operationId" : "getPerson",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The person ID.",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Person found",
+            "schema" : {
+              "$ref" : "#/definitions/Person"
+            }
+          },
+          "404" : {
+            "description" : "Person not found"
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Updates the given person",
+        "description" : "Returns the updated Person",
+        "operationId" : "putPerson",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The person ID.",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Person updated",
+            "schema" : {
+              "$ref" : "#/definitions/Person"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Deletes the given person",
+        "description" : "Deletes the Person whose id is the one given",
+        "operationId" : "deletePerson",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The person ID.",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Person deleted succesfully"
+          },
+          "400" : {
+            "description" : "Bad request"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Person" : {
+      "type" : "object",
+      "required" : [ "name" ],
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "example" : "Juan"
+        },
+        "id" : {
+          "type" : "integer"
+        },
+        "email" : {
+          "type" : "string",
+          "example" : "juan@a.com"
+        },
+        "href" : {
+          "$ref" : "#/definitions/URI"
+        },
+        "phoneList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/PhoneNumber"
+          }
+        }
+      }
+    },
+    "PhoneNumber" : {
+      "type" : "object",
+      "required" : [ "number" ],
+      "properties" : {
+        "number" : {
+          "type" : "string",
+          "example" : "693423442"
+        },
+        "type" : {
+          "type" : "string",
+          "enum" : [ "HOME", "MOBILE", "WORK\"" ]
+        }
+      }
+    },
+    "AddressBook" : {
+      "required" : [ "nextId", "personList" ],
+      "properties" : {
+        "nextId" : {
+          "type" : "integer",
+          "example" : 1
+        },
+        "personList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Person"
+          }
+        }
+      }
+    },
+    "URI" : {
+      "properties" : {
+        "scheme" : {
+          "type" : "string",
+          "example" : "http"
+        },
+        "autorithy" : {
+          "type" : "string",
+          "example" : "//"
+        },
+        "host" : {
+          "type" : "string",
+          "example" : "localhost"
+        },
+        "port" : {
+          "type" : "integer",
+          "example" : 8282
+        },
+        "path" : {
+          "type" : "string",
+          "example" : "/contacts"
+        },
+        "query" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}
